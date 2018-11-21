@@ -1,4 +1,4 @@
-# vue-multipage
+# vue-multipage-history
 
 ## Project setup
 ```
