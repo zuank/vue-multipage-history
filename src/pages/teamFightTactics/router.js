@@ -1,10 +1,10 @@
 import vue from 'vue'
-import router from 'vue-router'
+import Router from 'vue-router'
 
-vue.use(router)
+vue.use(Router)
 
-export default new router({
-    base: '/other/',
+export default new Router({
+    base: '/teamFightTactics/',
     mode: 'history',
     routes:[{
         path: '/',

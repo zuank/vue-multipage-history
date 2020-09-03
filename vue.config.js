@@ -9,14 +9,14 @@ module.exports = {
             filename: 'app/index.html',
             chunks: ['app']
         },
-        other: {
+        teamFightTactics: {
             // 入口文件
-            entry: './src/pages/other/main.js',
+            entry: './src/pages/teamFightTactics/main.js',
             // 模版文件
             template: 'public/index.html',
             // 输出文件名
-            filename: 'other/index.html',
-            chunks: ['other']
+            filename: 'teamFightTactics/index.html',
+            chunks: ['teamFightTactics']
         }
     },
     devServer: {
@@ -24,7 +24,7 @@ module.exports = {
             rewrites: [{
                 from: /^\/app/, to: '/app/index.html',
             },{
-                from: /^\/other/, to: '/other/index.html',
+                from: /^\/teamFightTactics/, to: '/teamFightTactics/index.html',
             }]
         }
     }
