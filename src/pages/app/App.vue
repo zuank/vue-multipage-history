@@ -5,8 +5,12 @@
     <p>完整数据区间<input type="num" v-model="fullMin">~<input type="num" v-model="fullMax"></p>
     <p>合格数据区间<input type="num" v-model="qualifiedMin">~<input type="num" v-model="qualifiedMax"></p>
     <p>合格率范围<input type="num" v-model="passRateMin">~<input type="text" v-model="passRateMax"></p>
-    <p><input type="button" value="生成数据" @click="getNumList"></p>
-    <table id="sjs-table" border="1" cellspacing="0" cellpadding="0">
+    <p>保留小数<input type="num" v-model="toFixed">位</p>
+    <p>
+      <input type="button" value="生成数据" @click="getNumList">
+      <input type="button" value="导出xlsx" @click="exportXlsx">
+    </p>
+    <table id="sjs-table" border="1" cellspacing="0" cellpadding="0" v-if="groupNumList.length">
       <thead>
       <tr>
         <td :colspan="gronpLength">数据</td>
@@ -25,6 +29,7 @@
 
 <script>
 import XLSX from 'xlsx'
+
 export default {
   name: 'app',
   data() {
@@ -53,20 +58,16 @@ export default {
           rate: passRate
         })
       }
-      setTimeout(()=>{
-        var wb = XLSX.utils.table_to_book(document.getElementById('sjs-table'));
-        XLSX.writeFile(wb, "export.xlsx");
-      },2000)
       // console.log(this.groupNumList)
     },
     // 获取一组数据
     getGroupNum(passRate) {
       const arr = []
-      for (let i = 0; i < passRate * 10; i++) {
-        arr.push((Math.random() * (Number(this.qualifiedMax) - Number(this.qualifiedMin)) + Number(this.qualifiedMin)).toFixed(2))
+      for (let i = 0; i < passRate * Number(this.gronpLength); i++) {
+        arr.push((Math.random() * (Number(this.qualifiedMax) - Number(this.qualifiedMin)) + Number(this.qualifiedMin)).toFixed(this.toFixed))
       }
       while (arr.length < this.gronpLength) {
-        const num = parseFloat(Math.random() * (Number(this.fullMax) - Number(this.fullMin)) + Number(this.fullMin)).toFixed(2)
+        const num = parseFloat(Math.random() * (Number(this.fullMax) - Number(this.fullMin)) + Number(this.fullMin)).toFixed(this.toFixed)
         if (!(num >= Number(this.qualifiedMin) && num <= Number(this.qualifiedMax))) {
           arr.push(num)
         }
@@ -74,6 +75,11 @@ export default {
       console.log(arr)
       // 进行乱序
       return arr.sort((a, b) => .5 - Math.random())
+    },
+    exportXlsx() {
+      if (this.groupNumList.length === 0) return
+      var wb = XLSX.utils.table_to_book(document.getElementById('sjs-table'));
+      XLSX.writeFile(wb, "export.xlsx");
     }
   }
 }
